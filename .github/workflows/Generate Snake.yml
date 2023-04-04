@@ -1,30 +1,48 @@
 # GitHub Action for generating a contribution graph with a snake eating your contributions.
 
-name: Generate Snake
+name: Generate Snake //这是这个Action的名字。
 
 on:
   schedule:
     - cron: "0 0 * * *"
-  workflow_dispatch:
+//这是指定这个Action的触发条件，这里是每天零点执行一次。
+
+workflow_dispatch:
+//这是允许手动触发这个Action的选项。
 
 jobs:
   build:
+  //这是定义这个Action要执行的任务的部分。
     runs-on: ubuntu-latest
-
+//这是指定这个任务要运行在哪种操作系统上，这里是最新版的Ubuntu。
     steps:
+    //这是定义这个任务要执行的步骤的部分。
       - name: Checkout
+      //这是第一个步骤的名字，用于检出仓库的代码。
         uses: actions/checkout@v2.3.4
-      
+      //这是指定要使用哪个Action来执行这个步骤，这里是使用actions/checkout@v2.3.4来检出代码。
       - name: Generate Snake
+      //这是第二个步骤的名字，用于生成贪吃蛇游戏。
         uses: Platane/snk@master
+        //这是指定要使用哪个Action来执行这个步骤，这里是使用Platane/snk@master来生成贪吃蛇游戏
         id: snake-gif
+        //这是给这个步骤分配一个标识符，方便后续引用。
         with:
-          github_user_name: ${{ github.repository_owner }}
+        //这是指定要传递给这个Action的参数的部分。
+          github_user_name: ${{ github.repository_owner }} 
+          //这是指定要读取贡献图的GitHub用户名，这里是使用变量github.repository_owner来表示仓库所有者的用户名。
           gif_out_path: ./assets/github-contribution-grid-snake.gif
+          //这是指定要生成的gif文件的输出路径。
           svg_out_path: ./assets/github-contribution-grid-snake.svg
+          这是指定要生成的svg文件的输出路径。
 
       - name: Push to GitHub
+      //这是第三个步骤的名字，用于将生成的文件推送到GitHub上。
         uses: EndBug/add-and-commit@v7.2.1
+        //这是指定要使用哪个Action来执行这个步骤，这里是使用EndBug/add-and-commit@v7.2.1来添加和提交文件3
         with:
+        //这是指定要传递给这个Action的参数的部分。
           branch: main
+          //这是指定要推送到哪个分支，这里是main分支。
           message: 'Generate Contribution Snake'
+          //这是指定提交信息。
